@@ -214,17 +214,6 @@ void Game::LoadData()
 
 	// UI elements
 	a = new Actor(this);
-	a->SetPosition(Vector3(-350.0f, -350.0f, 0.0f));
-	SpriteComponent* sc = new SpriteComponent(a);
-	sc->SetTexture(mRenderer->GetTexture("Assets/HealthBar.png"));
-
-	a = new Actor(this);
-	a->SetPosition(Vector3(-390.0f, 275.0f, 0.0f));
-	a->SetScale(0.75f);
-	sc = new SpriteComponent(a);
-	sc->SetTexture(mRenderer->GetTexture("Assets/Radar.png"));
-
-	a = new Actor(this);
 	a->SetScale(2.0f);
 	mCrosshair = new SpriteComponent(a);
 	mCrosshair->SetTexture(mRenderer->GetTexture("Assets/Crosshair.png"));
