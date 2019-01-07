@@ -11,7 +11,7 @@
 #include "BallActor.hpp"
 #include<iostream>
 
-Game::Game():mRenderer(nullptr), mPhysWorld(nullptr), mIsRunning(true), mUpdatingActors(false)
+Game::Game() :mRenderer(nullptr), mPhysWorld(nullptr), mIsRunning(true), mUpdatingActors(false)
 {
 
 }
@@ -161,11 +161,35 @@ void Game::GenerateOutput()
 	mRenderer->Draw();
 }
 
+void AddColumn(class Game* game, int x, int y, class Actor * a, Quaternion& q, Quaternion& q2) {
+	for (int i = 0;i < 9;i++) {
+		a = new PlaneActor(game);
+		a->SetScale(2.0f);
+		a->SetPosition(Vector3(x, y, i * 50));
+		a->SetRotation(q2);
+
+		a = new PlaneActor(game);
+		a->SetScale(2.0f);
+		a->SetPosition(Vector3(x - 200, y, i * 50));
+		a->SetRotation(q2);
+
+		a = new PlaneActor(game);
+		a->SetScale(2.0f);
+		a->SetPosition(Vector3(x - 100, y - 100, i * 50));
+		a->SetRotation(q);
+
+		a = new PlaneActor(game);
+		a->SetScale(2.0f);
+		a->SetPosition(Vector3(x - 100, y + 100, i * 50));
+		a->SetRotation(q);
+	}
+}
+
 void Game::LoadData()
 {
 	// Create actors
 	Actor* a = nullptr;
-	Quaternion q;
+	Quaternion q, q2,q3;
 
 	// Setup floor
 	const float start = -1250.0f;
@@ -191,20 +215,86 @@ void Game::LoadData()
 		a->SetPosition(Vector3(start + i * size, -start + size, 0.0f));
 		a->SetRotation(q);
 	}
-	q = Quaternion::Concatenate(q, Quaternion(Vector3::UnitZ, Math::PiOver2));
+
+	q2 = Quaternion::Concatenate(q, Quaternion(Vector3::UnitZ, Math::PiOver2));
 
 	// Forward/back walls
 	for (int i = 0; i < 10; i++)
 	{
 		a = new PlaneActor(this);
 		a->SetPosition(Vector3(start - size, start + i * size, 0.0f));
-		a->SetRotation(q);
-
+		a->SetRotation(q2);
 		a = new PlaneActor(this);
 		a->SetPosition(Vector3(-start + size, start + i * size, 0.0f));
-		a->SetRotation(q);
+		a->SetRotation(q2);
 	}
 
+	//prepreke
+
+	//left wall
+	for (int i = 0;i < 17;i++) {
+		for (int j = 0;j < 9;j++) {
+			a = new PlaneActor(this);
+			a->SetScale(2.0f);
+			a->SetPosition(Vector3(0, start-size/2-50+i*50, j*50));
+			a->SetRotation(q2);
+		}
+	}
+
+	for (int i = 1;i < 18;i++) {
+		for (int j = 0;j < 9;j++) {
+			a = new PlaneActor(this);
+			a->SetScale(2.0f);
+			a->SetPosition(Vector3((i * 50)-size*2+50, start + 3 * size, j * 50));
+			a->SetRotation(q);
+
+			a = new PlaneActor(this);
+			a->SetScale(2.0f);
+			a->SetPosition(Vector3((i * 50)-size*2+50, start + 3 * size - 200, j * 50));
+			a->SetRotation(q);
+		}
+	}
+
+
+
+	for (int i = 0;i < 9;i++) {
+		a = new PlaneActor(this);
+		a->SetScale(2.0f);
+		a->SetPosition(Vector3(500, start + 3 * size - 100, i * 50));
+		a->SetRotation(q2);
+
+		a = new PlaneActor(this);
+		a->SetScale(2.0f);
+		a->SetPosition(Vector3(-500, start + 3 * size - 100, i * 50));
+		a->SetRotation(q2);
+	}
+
+	AddColumn(this, 500, 500, a, q, q2);
+	AddColumn(this, -1000, -1000, a, q, q2);
+	AddColumn(this, -800, 200, a, q, q2);
+	
+	//right wall
+
+	for (int i = 0;i < 10;i++) {
+		for (int j = 0;j < 9;j++) {
+			a = new PlaneActor(this);
+			a->SetScale(2.0f);
+			a->SetPosition(Vector3(-500, -start - size + i * 50, j * 50));
+			a->SetRotation(q2);
+
+			a = new PlaneActor(this);
+			a->SetScale(2.0f);
+			a->SetPosition(Vector3(-700, -start - size + i * 50, j * 50));
+			a->SetRotation(q2);
+		}
+	}
+
+	for (int i = 0;i < 9;i++) {
+		a = new PlaneActor(this);
+		a->SetScale(2.0f);
+		a->SetPosition(Vector3(-600, -start-2*size+150, i * 50));
+		a->SetRotation(q);
+	}
 	// Setup lights
 	mRenderer->SetAmbientLight(Vector3(0.2f, 0.2f, 0.2f));
 	DirectionalLight& dir = mRenderer->GetDirectionalLight();
@@ -225,16 +315,19 @@ void Game::LoadData()
 
 	// Different camera actors
 	mFPSActor = new FPSActor(this);
-
+	q3 = Quaternion::Concatenate(q, Quaternion(Vector3::UnitZ, Math::TwoPi));
 	// Create target actors
 	a = new TargetActor(this);
-	a->SetPosition(Vector3(1450.0f, 0.0f, 100.0f));
+	a->SetPosition(Vector3(1450.0f, 0.0f, 200.0f));
 	a = new TargetActor(this);
-	a->SetPosition(Vector3(1450.0f, 0.0f, 400.0f));
+	a->SetRotation(q3);
+	a->SetPosition(Vector3(-950.0f, -1000.0f, 300.0f));
 	a = new TargetActor(this);
-	a->SetPosition(Vector3(1450.0f, -500.0f, 200.0f));
+	a->SetRotation(q3);
+	a->SetPosition(Vector3(-1450.0f, 500.0f, 200.0f));
 	a = new TargetActor(this);
-	a->SetPosition(Vector3(1450.0f, 500.0f, 200.0f));
+	a->SetRotation(q2);
+	a->SetPosition(Vector3(-100.0f, -450.0f, 200.0f));
 }
 
 void Game::UnloadData()
