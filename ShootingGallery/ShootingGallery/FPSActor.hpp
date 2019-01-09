@@ -20,7 +20,8 @@ private:
 	class Actor* mFPSModel;
 
 	bool isJumping = false;
-	bool isCrouching = false;
+	bool isCrouchingOld = false;
+	bool isCrouchingNew = false;
 	float jumpDuration = 1.0f; // how long will jump last
 	float jumpSpeed = 5.0f;
 	float jumpTime = 0.0f; // time since jumping started

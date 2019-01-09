@@ -48,8 +48,23 @@ void FPSActor::UpdateActor(float deltaTime)
 
 	Vector3 playerPos = GetPosition();
 	playerPos.z += deltaHeight;
-	playerPos.z -= isCrouching ? 20.0f : 0.0f;
+
+	if (!isCrouchingOld & isCrouchingNew)
+	{
+		playerPos.z -= 30.0f;
+		mBoxComp->SetObjectBox(AABB(Vector3(-25.0f, -25.0f, -57.5f), Vector3(25.0f, 25.0f, 87.5f)));
+		mBoxComp->OnUpdateWorldTransform();
+	}
+
+	if (isCrouchingOld & !isCrouchingNew)
+	{
+		playerPos.z += 30.0f;
+		mBoxComp->SetObjectBox(AABB(Vector3(-25.0f, -25.0f, -87.5f), Vector3(25.0f, 25.0f, 87.5f)));
+		mBoxComp->OnUpdateWorldTransform();
+	}
+
 	SetPosition(playerPos);
+	isCrouchingOld = isCrouchingNew;
 
 	// Update position of FPS model relative to actor position
 	const Vector3 modelOffset(Vector3(10.0f, 10.0f, -10.0f));
@@ -91,7 +106,7 @@ void FPSActor::ActorInput(const uint8_t* keys)
 	{
 		isJumping = keys[SDL_SCANCODE_SPACE];
 	}
-	isCrouching = keys[SDL_SCANCODE_LSHIFT];
+	isCrouchingNew = keys[SDL_SCANCODE_LSHIFT];
 
 	mMoveComp->SetForwardSpeed(forwardSpeed);
 	mMoveComp->SetStrafeSpeed(strafeSpeed);
