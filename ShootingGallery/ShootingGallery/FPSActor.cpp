@@ -31,6 +31,26 @@ void FPSActor::UpdateActor(float deltaTime)
 
 	FixCollisions();
 
+	// Calculate jumping position
+	float deltaHeight = 0.0f;
+	if (isJumping)
+	{
+		jumpTime += deltaTime;
+		deltaHeight = jumpSpeed * Math::Cos(Math::Pi * jumpTime / jumpDuration);
+
+		if (jumpTime >= jumpDuration)
+		{
+			isJumping = false;
+			jumpTime = 0.0f;
+			deltaHeight = 0.0f;
+		}
+	}
+
+	Vector3 playerPos = GetPosition();
+	playerPos.z += deltaHeight;
+	playerPos.z -= isCrouching ? 20.0f : 0.0f;
+	SetPosition(playerPos);
+
 	// Update position of FPS model relative to actor position
 	const Vector3 modelOffset(Vector3(10.0f, 10.0f, -10.0f));
 	Vector3 modelPos = GetPosition();
@@ -48,6 +68,7 @@ void FPSActor::ActorInput(const uint8_t* keys)
 {
 	float forwardSpeed = 0.0f;
 	float strafeSpeed = 0.0f;
+	float heightModifier = 0.0f;
 
 	if (keys[SDL_SCANCODE_W])
 	{
@@ -65,6 +86,12 @@ void FPSActor::ActorInput(const uint8_t* keys)
 	{
 		strafeSpeed += 400.0f;
 	}
+
+	if (!isJumping)
+	{
+		isJumping = keys[SDL_SCANCODE_SPACE];
+	}
+	isCrouching = keys[SDL_SCANCODE_LSHIFT];
 
 	mMoveComp->SetForwardSpeed(forwardSpeed);
 	mMoveComp->SetStrafeSpeed(strafeSpeed);

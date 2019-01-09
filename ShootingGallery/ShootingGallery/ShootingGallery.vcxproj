@@ -23,7 +23,7 @@
     <ProjectGuid>{43C6C88A-D5D6-46B7-B393-B651C8E772D8}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>ShootingGallery</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -72,10 +72,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\rapidjson\include;D:\SDL2\SDL2-2.0.5\include;D:\SDL2\SDL2_image-2.0.1\include;D:\GLEW\glew-2.1.0\include;D:\SOIL\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\rapidjson\include;C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\SOIL\include;C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\glew-2.1.0\include;C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\SDL2\SDL2_image-2.0.1\include;C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\SDL2\SDL2-2.0.5\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\rapidjson\include;C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\SOIL\include;C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\glew-2.1.0\include;C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\SDL2\SDL2_image-2.0.1\include;C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\SDL2\SDL2-2.0.5\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -90,11 +91,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\rapidjson\include;D:\SDL2\SDL2-2.0.5\include;D:\SDL2\SDL2_image-2.0.1\include;D:\GLEW\glew-2.1.0\include;D:\SOIL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\SOIL\include;C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\SDL2\SDL2-2.0.5\include;C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\SDL2\SDL2_image-2.0.1\include;C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\rapidjson\include;C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>D:\SDL2\SDL2-2.0.5\lib\x86;D:\SDL2\SDL2_image-2.0.1\lib\x86;D:\GLEW\glew-2.1.0\lib\Release\Win32;D:\SOIL\lib\win\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\glew-2.1.0\lib\Release\Win32;C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\SOIL\lib\win\x86;C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\SDL2\SDL2-2.0.5\lib\x86;C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\SDL2\SDL2_image-2.0.1\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SOIL.lib;opengl32.lib;glew32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -105,9 +106,17 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\SOIL\include;C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\SDL2\SDL2-2.0.5\include;C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\SDL2\SDL2_image-2.0.1\include;C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\rapidjson\include;C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\glew-2.1.0\lib\Release\Win32;C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\SOIL\lib\win\x86;C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\SDL2\SDL2-2.0.5\lib\x86;C:\Users\Josip-laptop\source\repos\Shooting-Gallery\Dependencies\SDL2\SDL2_image-2.0.1\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SOIL.lib;
+opengl32.lib;
+glew32.lib
+;SDL2.lib
+;SDL2main.lib;
+SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
