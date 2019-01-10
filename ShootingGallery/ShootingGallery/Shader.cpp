@@ -64,6 +64,36 @@ void Shader::SetFloatUniform(const char* name, float value)
 	glUniform1f(loc, value);
 }
 
+void Shader::SetPointLightUniform(const char * name, PointLight lights[], int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		std::string coreName = std::string(name);
+		coreName += "[" + std::to_string(i) + "].";
+
+		GLuint loc1 = glGetUniformLocation(mShaderProgram, (coreName + "Position").c_str());
+		glUniform3fv(loc1, 1, lights[i].Position.GetAsFloatPtr());
+
+		GLuint loc2 = glGetUniformLocation(mShaderProgram, (coreName + "DiffuseColor").c_str());
+		glUniform3fv(loc2, 1, lights[i].DiffuseColor.GetAsFloatPtr());
+
+		GLuint loc3 = glGetUniformLocation(mShaderProgram, (coreName + "SpecularColor").c_str());
+		glUniform3fv(loc3, 1, lights[i].SpecularColor.GetAsFloatPtr());
+	}
+}
+
+void Shader::SetFloatArrayUniform(const char * name, float values[], int size)
+{
+	GLuint loc = glGetUniformLocation(mShaderProgram, name);
+	glUniform3fv(loc, size, (const GLfloat *)values);
+}
+
+void Shader::SetIntUniform(const char * name, int value)
+{
+	GLuint loc = glGetUniformLocation(mShaderProgram, name);
+	glUniform1i(loc, value);
+}
+
 bool Shader::CompileShader(const std::string& fileName, GLenum shaderType, GLuint& outShader)
 {
 	std::ifstream shaderFile(fileName);

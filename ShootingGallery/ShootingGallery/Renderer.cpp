@@ -68,6 +68,8 @@ void Renderer::Shutdown()
 	delete mSpriteShader;
 	mMeshShader->Unload();
 	delete mMeshShader;
+	simpleDepthShader->Unload();
+	delete simpleDepthShader;
 	SDL_GL_DeleteContext(mContext);
 	SDL_DestroyWindow(mWindow);
 }
@@ -91,6 +93,7 @@ void Renderer::UnloadData()
 
 void Renderer::Draw()
 {
+	//glViewport(0, 0, mScreenWidth, mScreenHeight);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -124,6 +127,41 @@ void Renderer::Draw()
 	}
 
 	SDL_GL_SwapWindow(mWindow);
+}
+
+void Renderer::GenerateShadowMap()
+{
+	// Depth map
+	unsigned int depthMapFBO;
+	glGenFramebuffers(1, &depthMapFBO);
+
+	// Generate 2D texture to be used for depth buffer
+	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+	unsigned int depthMap;
+	glGenTextures(1, &depthMap);
+	glBindTexture(GL_TEXTURE_2D, depthMap);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	// Attach texture to depth buffer
+	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	// Render to depth map
+	glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+	glClear(GL_DEPTH_BUFFER_BIT);
+
+	// Prepare light matrix
+	float near_plane = 1.0f, far_plane = 7.5f;
+	Matrix4 lightProjection = Matrix4::CreatePerspectiveFOV(Math::TwoPi, 20.0f, 20.0f, near_plane, far_plane);
+
 }
 
 void Renderer::AddSprite(SpriteComponent* sprite)
@@ -229,6 +267,13 @@ bool Renderer::LoadShaders()
 	mView = Matrix4::CreateLookAt(Vector3::Zero, Vector3::UnitX, Vector3::UnitZ);
 	mProjection = Matrix4::CreatePerspectiveFOV(Math::ToRadians(70.0f), mScreenWidth, mScreenHeight, 10.0f, 10000.0f);
 	mMeshShader->SetMatrixUniform("uViewProj", mView * mProjection);
+
+	simpleDepthShader = new Shader();
+	if (!simpleDepthShader->Load("Shaders/SimpleDepth.vert", "Shaders/SimpleDepth.frag"))
+	{
+		return false;
+	}
+
 	return true;
 }
 
@@ -258,6 +303,18 @@ void Renderer::SetLightUniforms(Shader* shader)
 	shader->SetVectorUniform("uDirLight.mDirection", mDirLight.mDirection);
 	shader->SetVectorUniform("uDirLight.mDiffuseColor", mDirLight.mDiffuseColor);
 	shader->SetVectorUniform("uDirLight.mSpecColor", mDirLight.mSpecColor);
+
+	shader->SetIntUniform("nLights", pointLights.size());
+
+	PointLight lightArray[8];
+	for (int i = 0; i < 8; i++)
+	{
+		if (i < pointLights.size())
+		{
+			lightArray[i] = pointLights[i];
+		}
+	}
+	shader->SetPointLightUniform("pLight", lightArray, 8);
 }
 
 Vector3 Renderer::Unproject(const Vector3& screenPoint) const

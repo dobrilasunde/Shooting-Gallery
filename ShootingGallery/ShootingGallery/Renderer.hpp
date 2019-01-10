@@ -12,6 +12,13 @@ struct DirectionalLight
 	Vector3 mSpecColor;
 };
 
+struct PointLight
+{
+	Vector3 Position;
+	Vector3 DiffuseColor;
+	Vector3 SpecularColor;
+};
+
 class Renderer
 {
 public:
@@ -23,6 +30,7 @@ public:
 	void UnloadData();
 
 	void Draw();
+	void GenerateShadowMap();
 
 	void AddSprite(class SpriteComponent* sprite);
 	void RemoveSprite(class SpriteComponent* sprite);
@@ -37,6 +45,8 @@ public:
 
 	void SetAmbientLight(const Vector3& ambient) { mAmbientLight = ambient; }
 	DirectionalLight& GetDirectionalLight() { return mDirLight; }
+	std::vector<PointLight> GetPointLights() { return pointLights; }
+	void AddPointLight(PointLight& light) { pointLights.push_back(light); }
 
 	// Given a screen space point, unprojects it into world space,
 	// based on the current 3D view/projection matrices
@@ -48,6 +58,7 @@ public:
 	void GetScreenDirection(Vector3& outStart, Vector3& outDir) const;
 	float GetScreenWidth() const { return mScreenWidth; }
 	float GetScreenHeight() const { return mScreenHeight; }
+
 private:
 	bool LoadShaders();
 	void CreateSpriteVerts();
@@ -64,6 +75,7 @@ private:
 	class Shader* mSpriteShader;
 	class VertexArray* mSpriteVerts;
 	class Shader* mMeshShader;
+	class Shader* simpleDepthShader;
 
 	Matrix4 mView;
 	Matrix4 mProjection;
@@ -72,6 +84,7 @@ private:
 
 	Vector3 mAmbientLight;
 	DirectionalLight mDirLight;
+	std::vector<PointLight> pointLights = {};
 
 	SDL_Window* mWindow;
 	SDL_GLContext mContext;

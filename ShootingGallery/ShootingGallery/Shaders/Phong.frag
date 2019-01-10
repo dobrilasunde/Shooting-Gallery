@@ -9,6 +9,8 @@
 // Request GLSL 3.3
 #version 330
 
+#define N_POINT_LIGHTS 8;
+
 // Inputs from vertex shader
 // Tex coord
 in vec2 fragTexCoord;
@@ -16,6 +18,8 @@ in vec2 fragTexCoord;
 in vec3 fragNormal;
 // Position (in world space)
 in vec3 fragWorldPos;
+
+//in vec3 pLightDirection[N_POINT_LIGHTS]
 
 // This corresponds to the output color to the color buffer
 out vec4 outColor;
@@ -34,6 +38,21 @@ struct DirectionalLight
 	vec3 mSpecColor;
 };
 
+// struct for point light
+struct PointLight
+{
+    // Position of light
+    vec3 Position;
+    // Diffuse color
+    vec3 DiffuseColor;
+    // Specular color
+    vec3 SpecularColor;
+};
+
+uniform PointLight pLight[8];
+// number of active lights
+uniform int nLights;
+
 // Uniforms for lighting
 // Camera position (in world space)
 uniform vec3 uCameraPos;
@@ -44,6 +63,22 @@ uniform vec3 uAmbientLight;
 
 // Directional Light
 uniform DirectionalLight uDirLight;
+
+vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
+{
+    vec3 result = vec3(0.0, 0.0, 0.0);
+    vec3 lightDir = normalize(light.Position - fragPos);
+    float NdotL = abs(dot(normal, lightDir));
+    vec3 reflection = reflect(-lightDir, normal);
+    float distance = distance(light.Position, fragPos) * 0.02;
+    float attenuation = 1.0 / (1.0 + 0.1 * distance + 0.01 * distance * distance);
+
+    vec3 Diffuse = light.DiffuseColor * NdotL;
+    vec3 Specular = light.SpecularColor * pow(max(0.0, dot(reflection, viewDir)), uSpecPower);
+    result = (Diffuse + Specular) * attenuation;
+
+    return result;
+}
 
 void main()
 {
@@ -66,6 +101,10 @@ void main()
 		Phong += Diffuse + Specular;
 	}
 
+        vec3 pointLights = vec3(0.0, 0.0, 0.0);
+        for (int i = 0; i < nLights; i++)
+            pointLights += CalcPointLight(pLight[i], N, fragWorldPos, V);
+
 	// Final color is texture color times phong light (alpha = 1)
-    outColor = texture(uTexture, fragTexCoord) * vec4(Phong, 1.0f);
+    outColor = texture(uTexture, fragTexCoord) * vec4(Phong + pointLights, 1.0f);
 }

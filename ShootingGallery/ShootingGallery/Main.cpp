@@ -9,5 +9,8 @@ int main(int argc, char** argv)
 		game.RunLoop();
 	}
 	game.Shutdown();
+
+	// Uncomment if debugging, this will stop console with output from disappearing upon end
+	//system("pause");
 	return 0;
 }
