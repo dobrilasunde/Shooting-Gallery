@@ -20,6 +20,8 @@ struct PointLight
     vec3 DiffuseColor;
     // Specular color
     vec3 SpecularColor;
+    // Light switch
+    int TurnOn;
 };
 
 // Uniforms for world transform and view-proj

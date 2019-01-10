@@ -306,30 +306,35 @@ void Game::LoadData()
 	yellowLight.Position = Vector3(0.0f, 0.0f, 100.0f);
 	yellowLight.DiffuseColor = Vector3(0.8f, 0.8f, 0.0f);
 	yellowLight.SpecularColor = Vector3(0.8f, 0.8f, 0.0f);
+	yellowLight.TurnOn = 0;
 	mRenderer->AddPointLight(yellowLight);
 
 	auto redLight = PointLight();
 	redLight.Position = Vector3(1000.0f, -1000.0f, 100.0f);
 	redLight.DiffuseColor = Vector3(1.0f, 0.4f, 0.4f);
 	redLight.SpecularColor = Vector3(0.8f, 0.3f, 0.3f);
+	redLight.TurnOn = 0;
 	mRenderer->AddPointLight(redLight);
 
 	auto greenLight = PointLight();
 	greenLight.Position = Vector3(1000.0f, 1000.0f, 100.0f);
 	greenLight.DiffuseColor = Vector3(0.4f, 1.0f, 0.4f);
 	greenLight.SpecularColor = Vector3(0.3f, 0.8f, 0.3f);
+	greenLight.TurnOn = 0;
 	mRenderer->AddPointLight(greenLight);
 
 	auto blueLight = PointLight();
 	blueLight.Position = Vector3(-1000.0f, 1000.0f, 100.0f);
 	blueLight.DiffuseColor = Vector3(0.4f, 0.4f, 1.0f);
 	blueLight.SpecularColor = Vector3(0.3f, 0.3f, 0.8f);
+	blueLight.TurnOn = 0;
 	mRenderer->AddPointLight(blueLight);
 
 	auto tealLight = PointLight();
 	tealLight.Position = Vector3(-800.0f, -1000.0f, 100.0f);
 	tealLight.DiffuseColor = Vector3(0.0f, 0.8f, 0.8f);
 	tealLight.SpecularColor = Vector3(0.0f, 0.8f, 0.8f);
+	tealLight.TurnOn = 0;
 	mRenderer->AddPointLight(tealLight);
 
 	// UI elements

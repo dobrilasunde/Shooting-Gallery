@@ -47,6 +47,8 @@ struct PointLight
     vec3 DiffuseColor;
     // Specular color
     vec3 SpecularColor;
+    // Light switch
+    int TurnOn;
 };
 
 uniform PointLight pLight[8];
@@ -77,7 +79,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     vec3 Specular = light.SpecularColor * pow(max(0.0, dot(reflection, viewDir)), uSpecPower);
     result = (Diffuse + Specular) * attenuation;
 
-    return result;
+    return result * light.TurnOn;
 }
 
 void main()

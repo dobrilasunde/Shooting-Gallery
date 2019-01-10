@@ -25,4 +25,16 @@ private:
 	float jumpDuration = 1.0f; // how long will jump last
 	float jumpSpeed = 5.0f;
 	float jumpTime = 0.0f; // time since jumping started
+
+	// Spotlight triggers
+	bool redSwitchOld = false;
+	bool redSwitchNew = false;
+	bool greenSwitchOld = false;
+	bool greenSwitchNew = false;
+	bool blueSwitchOld = false;
+	bool blueSwitchNew = false;
+	bool tealSwitchOld = false;
+	bool tealSwitchNew = false;
+	bool yellowSwitchOld = false;
+	bool yellowSwitchNew = false;
 };

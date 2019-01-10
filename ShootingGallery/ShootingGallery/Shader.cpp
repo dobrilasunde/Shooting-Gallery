@@ -79,6 +79,9 @@ void Shader::SetPointLightUniform(const char * name, PointLight lights[], int si
 
 		GLuint loc3 = glGetUniformLocation(mShaderProgram, (coreName + "SpecularColor").c_str());
 		glUniform3fv(loc3, 1, lights[i].SpecularColor.GetAsFloatPtr());
+
+		GLuint loc4 = glGetUniformLocation(mShaderProgram, (coreName + "TurnOn").c_str());
+		glUniform1i(loc4, lights[i].TurnOn);
 	}
 }
 

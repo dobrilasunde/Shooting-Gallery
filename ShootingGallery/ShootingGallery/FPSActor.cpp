@@ -66,6 +66,12 @@ void FPSActor::UpdateActor(float deltaTime)
 	SetPosition(playerPos);
 	isCrouchingOld = isCrouchingNew;
 
+	redSwitchOld = redSwitchNew;
+	blueSwitchOld = blueSwitchNew;
+	greenSwitchOld = greenSwitchNew;
+	tealSwitchOld = tealSwitchNew;
+	yellowSwitchOld = yellowSwitchNew;
+
 	// Update position of FPS model relative to actor position
 	const Vector3 modelOffset(Vector3(10.0f, 10.0f, -10.0f));
 	Vector3 modelPos = GetPosition();
@@ -107,6 +113,24 @@ void FPSActor::ActorInput(const uint8_t* keys)
 		isJumping = keys[SDL_SCANCODE_SPACE];
 	}
 	isCrouchingNew = keys[SDL_SCANCODE_LSHIFT];
+
+	redSwitchNew = keys[SDL_SCANCODE_1];
+	greenSwitchNew = keys[SDL_SCANCODE_2];
+	blueSwitchNew = keys[SDL_SCANCODE_3];
+	tealSwitchNew = keys[SDL_SCANCODE_4];
+	yellowSwitchNew = keys[SDL_SCANCODE_5];
+
+	auto renderer = GetGame()->GetRenderer();
+	if (!redSwitchOld & redSwitchNew)
+		renderer->SwitchLight(1);
+	if (!greenSwitchOld & greenSwitchNew)
+		renderer->SwitchLight(2);
+	if (!blueSwitchOld & blueSwitchNew)
+		renderer->SwitchLight(3);
+	if (!tealSwitchOld & tealSwitchNew)
+		renderer->SwitchLight(4);
+	if (!yellowSwitchOld & yellowSwitchNew)
+		renderer->SwitchLight(0);
 
 	mMoveComp->SetForwardSpeed(forwardSpeed);
 	mMoveComp->SetStrafeSpeed(strafeSpeed);

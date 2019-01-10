@@ -17,6 +17,7 @@ struct PointLight
 	Vector3 Position;
 	Vector3 DiffuseColor;
 	Vector3 SpecularColor;
+	int TurnOn;
 };
 
 class Renderer
@@ -46,7 +47,9 @@ public:
 	void SetAmbientLight(const Vector3& ambient) { mAmbientLight = ambient; }
 	DirectionalLight& GetDirectionalLight() { return mDirLight; }
 	std::vector<PointLight> GetPointLights() { return pointLights; }
+
 	void AddPointLight(PointLight& light) { pointLights.push_back(light); }
+	void SwitchLight(int light) { pointLights[light].TurnOn = (pointLights[light].TurnOn == 0 ? 1 : 0); }
 
 	// Given a screen space point, unprojects it into world space,
 	// based on the current 3D view/projection matrices
